@@ -115,30 +115,29 @@ void *cgc_malloc(cgc_size_t size)
 
   /* Remove the block we're going to use from the free list */
   cgc_remove_from_flist(blk);
-  #ifndef BIT64
-    /* Split the block into two pieces if possible */
-    cgc_size_t sdiff = blk->size - size;
-    if (sdiff > 2 * HEADER_PADDING) {
-      struct blk_t *nb = (struct blk_t *)((intptr_t)blk + size);
 
-      nb->size = sdiff;
-      nb->free = 1;
-      nb->fsucc = NULL;
-      nb->fpred = NULL;
+  /* Split the block into two pieces if possible */
+  cgc_size_t sdiff = blk->size - size;
+  if (sdiff > 2 * HEADER_PADDING) {
+    struct blk_t *nb = (struct blk_t *)((intptr_t)blk + size);
 
-      blk->size = size;
+    nb->size = sdiff;
+    nb->free = 1;
+    nb->fsucc = NULL;
+    nb->fpred = NULL;
 
-      /* Patch up blk list pointers */
-      nb->prev = blk;
-      nb->next = blk->next;
-      if (blk->next)
-        blk->next->prev = nb;
-      blk->next = nb;
+    blk->size = size;
 
-      /* Put the new block into the free list */
-      cgc_insert_into_flist(nb);
-    }
-  #endif
+    /* Patch up blk list pointers */
+    nb->prev = blk;
+    nb->next = blk->next;
+    if (blk->next)
+      blk->next->prev = nb;
+    blk->next = nb;
+
+    /* Put the new block into the free list */
+    cgc_insert_into_flist(nb);
+  }
 
   return (void *)((intptr_t)blk + HEADER_PADDING);
 }
