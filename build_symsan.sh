@@ -25,8 +25,8 @@ if [[ -z "${NO_PYTHON_I_KNOW_WHAT_I_AM_DOING_I_SWEAR}" ]]; then
 fi
 
 echo "Creating build directory"
-mkdir -p "${DIR}/build"
-cd "${DIR}/build"
+mkdir -p "${DIR}/build_symsan"
+cd "${DIR}/build_symsan"
 
 echo "Creating Makefiles"
 CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
