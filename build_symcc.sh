@@ -4,8 +4,8 @@ set -e
 
 export SYMCC_NO_SYMBOLIC_INPUT=1
 export SYMCC_REGULAR_LIBCXX=1
-export CC=/home/cju/symcc/build/symcc
-export CXX=/home/cju/symcc/build/sym++
+export CC=/symcc/build/symcc
+export CXX=/symcc/build/sym++
 export BITNESS=64
 #export LINK=STATIC
 
