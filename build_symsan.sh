@@ -5,10 +5,9 @@ set -e
 export KO_DONT_OPTIMIZE=1
 export KO_CC=clang-6.0
 export KO_CXX=clang++-6.0
-export USE_TRACK=1
 
-export CC=/symsan/bin/ko-clang
-export CXX=/symsan/bin/ko-clang++
+export CC=/Kirenenko/bin/ko-clang
+export CXX=/Kirenenko/bin/ko-clang++
 export BITNESS=64
 #export LINK=STATIC
 
