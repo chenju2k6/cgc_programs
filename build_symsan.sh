@@ -6,8 +6,8 @@ export KO_DONT_OPTIMIZE=1
 export KO_CC=clang-6.0
 export KO_CXX=clang++-6.0
 
-export CC=/Kirenenko/bin/ko-clang
-export CXX=/Kirenenko/bin/ko-clang++
+export CC=/kirenenko/bin/ko-clang
+export CXX=/kirenenko/bin/ko-clang++
 export BITNESS=64
 #export LINK=STATIC
 
