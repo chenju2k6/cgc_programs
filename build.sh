@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+export BITNESS=64
 
 # Root cb-multios directory
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
