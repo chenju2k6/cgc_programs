@@ -2,6 +2,7 @@
 
 set -e
 export BITNESS=64
+export LINK=STATIC
 
 # Root cb-multios directory
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
