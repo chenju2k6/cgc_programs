@@ -1,6 +1,7 @@
 #ifndef STDINT_H_
 #define STDINT_H_
 
+
 typedef signed char int8_t;
 typedef short int int16_t;
 typedef int int32_t;
@@ -11,8 +12,27 @@ typedef unsigned short int uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long int uint64_t;
 
-typedef int intptr_t;
-typedef unsigned int uintptr_t;
+#ifdef X32_COMPILE
+    # define INT_MIN        INT32_MIN
+    # define LONG_MIN       INT32_MIN
+    # define INT_MAX        INT32_MAX
+    # define UINT_MAX       UINT32_MAX
+    # define LONG_MAX       INT32_MAX
+    # define ULONG_MAX      UINT32_MAX
+
+    typedef int intptr_t;
+    typedef unsigned int uintptr_t;
+#else
+    # define INT_MIN        INT64_MIN
+    # define LONG_MIN       INT64_MIN
+    # define INT_MAX        INT64_MAX
+    # define UINT_MAX       UINT64_MAX
+    # define LONG_MAX       INT64_MAX
+    # define ULONG_MAX      UINT64_MAX
+
+    typedef int64_t intptr_t;
+    typedef uint64_t uintptr_t;
+#endif
 
 #  define __INT64_C(c)  c ## LL
 #  define __UINT64_C(c) c ## ULL

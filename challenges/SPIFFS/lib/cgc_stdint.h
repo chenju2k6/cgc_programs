@@ -26,6 +26,7 @@ THE SOFTWARE.
 #ifndef __STDINT_H__
 #define __STDINT_H__
 
+
 typedef signed char int8_t;
 typedef short int int16_t;
 typedef int int32_t;

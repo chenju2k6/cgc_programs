@@ -29,7 +29,11 @@
 #include "cgc_stdint.h"
 
 #define NUM_FREE_LISTS 32
-#define HEADER_PADDING 24
+#ifdef X32_COMPILE
+ #define HEADER_PADDING 24
+#else
+ #define HEADER_PADDING 48
+#endif
 #define NEW_CHUNK_SIZE 262144
 #define ALIGNMENT 8
 
@@ -38,7 +42,7 @@ extern cgc_size_t size_class_limits[NUM_FREE_LISTS];
 
 struct blk_t {
   cgc_size_t size;
-  unsigned int free;
+  unsigned long free;
   struct blk_t *fsucc;
   struct blk_t *fpred;
   struct blk_t *next;
