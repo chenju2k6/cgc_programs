@@ -27,7 +27,8 @@ THE SOFTWARE.
 #ifndef DATES_H
 #define DATES_H
 
-typedef unsigned long time_t;
+//typedef unsigned long time_t;
+#include <sys/types.h>
 
 typedef struct {
 

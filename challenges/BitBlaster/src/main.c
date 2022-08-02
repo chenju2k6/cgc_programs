@@ -1,5 +1,9 @@
 #include "libcgc.h"
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 #define BOARD_SIZE 32
 #define ROW_1 (BOARD_SIZE - 1)
 #define ROW_2 (BOARD_SIZE - 2)
@@ -183,6 +187,10 @@ int cgc_isWinner()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   uint8_t temp;
 
   cgc_initBoard();
@@ -206,6 +214,8 @@ int main(int cgc_argc, char *cgc_argv[])
 #else
   ((int (*)())0)();
 #endif
+
+close(fdin);
 
   cgc_transmit_all(1, "You Win\n", 8);
 }

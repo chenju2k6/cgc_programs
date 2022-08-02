@@ -24,8 +24,15 @@
 #include "cgc_vm.h"
 #include "cgc_stack.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	Stack programStack ={-1, 0, 0, NULL};
 
 	while(1) {
@@ -67,5 +74,5 @@ int main(int cgc_argc, char *cgc_argv[]) {
 			}
 		}
 	}
-
+close(fdin);
 }

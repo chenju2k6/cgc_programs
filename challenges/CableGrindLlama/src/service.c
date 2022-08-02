@@ -20,12 +20,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_libdupe.h"
 #include "cgc_cablegrind.h"
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int i;
     uint32_t filesize;
     uint8_t *data;
@@ -66,6 +73,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
     cgc_setheap(0);
     cgc_dupe_close(f);
-
+close(fdin);
     return 0;
 }

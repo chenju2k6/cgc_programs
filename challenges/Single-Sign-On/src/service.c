@@ -22,6 +22,9 @@
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void cgc_reportMessage(char* message, cgc_size_t message_size) {
 	int ret;
@@ -264,6 +267,10 @@ int cgc_logoutUser(User** userList, unsigned long id) {
 
 int main(int cgc_argc, char *cgc_argv[]) {
 
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	Command command;
 	unsigned long auth_val=0;
 	User* userList=NULL;
@@ -340,4 +347,5 @@ int main(int cgc_argc, char *cgc_argv[]) {
 		}
 
 	}
+close(fdin);
 }

@@ -1,5 +1,8 @@
 #include "libcgc.h"
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_words.h"
 
 typedef unsigned int uint32_t;
@@ -337,6 +340,10 @@ void cgc_scramble(char* dst, char* src, cgc_size_t len)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 #define BUF_SIZE 64
 #define READLINE(_buf, _len) do { sret = cgc_readline(_buf, _len); if (sret == 0) { cgc__terminate(1); } } while (0)
 
@@ -410,6 +417,7 @@ int main(int cgc_argc, char *cgc_argv[])
   {
     cgc_transmit_str(WIN_MSG);
   }
+close(fdin);
   return (0);
 }
 

@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -33,6 +36,10 @@ Recipe_Type *cgc_recipe_book=0;
 
 int main(int cgc_argc, char *cgc_argv[]) {
     
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 cgc_size_t size;
 char buffer[10];
 int command;
@@ -89,7 +96,7 @@ char buffer2[100];
 
       
     }  // while(1)
-
+close(fdin);
  
 }  // main  
 

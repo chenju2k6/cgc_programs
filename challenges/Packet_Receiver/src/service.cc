@@ -24,10 +24,17 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_common.h"
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     bool bDone = false;
 
     CDataStream oDataStream;
@@ -68,7 +75,7 @@ int main(int cgc_argc, char *cgc_argv[])
             }
         }
     } while ( !bDone );
-
+close(fdin);
 
     return 0;
 }

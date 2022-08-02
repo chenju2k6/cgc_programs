@@ -20,6 +20,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_service.h"
 #include "cgc_proto.h"
@@ -28,6 +31,10 @@
 
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int res = 0;
     //init our global packet var
     ALLOC(0,(void **)&curpkt,TFTTP_STRUCT_SIZE);
@@ -40,5 +47,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
         }
 
     }
+clsoe(fdin);
     return 0;
 }

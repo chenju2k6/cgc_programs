@@ -22,6 +22,8 @@
  */
 
 #include "libcgc.h"
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "cgc_stdint.h"
 #include "cgc_stdlib.h"
@@ -34,6 +36,10 @@ extern form_t cgc_af86;
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   char line_buf[LINE_SIZE];
   int with_title = 1;
   int ret;
@@ -60,5 +66,6 @@ int main(int cgc_argc, char *cgc_argv[])
       done = 0;
     }
   }
+close(fdin);
   return 0;
 }

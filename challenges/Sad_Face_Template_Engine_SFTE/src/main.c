@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
@@ -178,6 +181,10 @@ void cgc_render_text(char *input, dict_t **vars)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   cgc_size_t input_len;
   char buf[MAX_BUF_SIZE], input[MAX_BUF_SIZE];
   dict_t **vars = cgc_dict_new();
@@ -218,6 +225,7 @@ int main(int cgc_argc, char *cgc_argv[])
    }
    cgc_printf("\n");
   }
+close(fdin);
   return 0;
 
 fail:

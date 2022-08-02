@@ -22,6 +22,9 @@
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int cgc_nextRecord(Record* record) {
 	int bytesRead = 0;
@@ -275,6 +278,10 @@ void cgc_initPortfolio(Portfolio* portfolio, unsigned int startingBalance)
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	Dataset dataset;
 	Portfolio portfolio;
 	Record record;
@@ -320,7 +327,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
 
 	}
-
+close(fdin);
 	return 0;
 
 }

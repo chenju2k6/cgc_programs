@@ -19,6 +19,10 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_common.h"
@@ -31,6 +35,10 @@
 #define PARTIAL_MSG "PARTIAL AIS MESSAGE."
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	char ret = SUCCESS;
     int bytes_received = 0;
 
@@ -77,6 +85,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
         cgc_free(english);
         cgc_free(buf);
     }
-
+close(fdin);
 	return ret;
 }

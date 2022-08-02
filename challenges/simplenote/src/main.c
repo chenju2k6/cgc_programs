@@ -33,6 +33,9 @@
 # 10 "lib/libcgc.h"
 typedef long unsigned int cgc_size_t;
 typedef long signed int cgc_ssize_t;
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 
 
@@ -607,6 +610,10 @@ void cgc_free_argv(char** argv, cgc_size_t n)
 int main(int cgc_argc, char *cgc_argv[])
 {
 
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
+
   char input_buf[(16 * 1024)];
   const char* resp;
   for (;;)
@@ -691,4 +698,5 @@ int main(int cgc_argc, char *cgc_argv[])
     resp = ((void *)0);
     cgc_free(command);
   }
+close(fdin);
 }

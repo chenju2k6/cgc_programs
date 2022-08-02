@@ -20,6 +20,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_libc.h"
 
@@ -43,6 +46,10 @@ static struct stock_state state = {};
 
 int
 main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int cmd_ret = 0;
     cgc_size_t size = 0;
     struct command cmd = {};
@@ -78,7 +85,7 @@ main(int cgc_argc, char *cgc_argv[]) {
 
         cgc_write_all(STDOUT, &cmd_ret, sizeof(cmd_ret));
     }
-   
+close(fdin);   
 out:
     cgc_stock_destroy(&state);
 

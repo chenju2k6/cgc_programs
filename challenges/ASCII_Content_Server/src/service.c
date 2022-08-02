@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdlib.h"
 #include "cgc_stdint.h"
@@ -33,6 +36,10 @@ THE SOFTWARE.
 
 // Runs the ASCII Content Server
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   // Initialize server
   if (cgc_InitializeTree() != 0) {
     cgc_PrintErrorAndTerminate("Initialize server failed");
@@ -47,5 +54,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
     cgc_HandleCommand(&command);
     cgc_DestroyCommand(&command);
   } while (more_commands == 1); 
+close(fdin);
   return 0;
 }

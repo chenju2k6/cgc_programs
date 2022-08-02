@@ -51,6 +51,9 @@ THE SOFTWARE.
  **/
 #include "cgc_struct_inits.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 psetArray cgc_root = NULL;
 
@@ -1226,6 +1229,10 @@ end:
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     cgc_command_loop();
+close(fdin);
     return 0;
 }

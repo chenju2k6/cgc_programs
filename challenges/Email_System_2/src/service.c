@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_user.h"
@@ -213,6 +216,10 @@ int cgc_handle_B_input()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	cgc_msg_count_login = 0;
 	cgc_user_count = 0;
 	bad_login_count = 0;
@@ -232,6 +239,7 @@ B_menu:
 		if (cgc_handle_B_input() == 2)
 			goto A_menu;
 	}
+close(fdin);
 	
 	return 0;
 }

@@ -24,6 +24,9 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <libcgc.h>
 #include "stdlib.h"
 #include "service.h"
@@ -33,6 +36,9 @@ unsigned (*swap_word)(unsigned);
 
 int main(int cgc_argc, char *cgc_argv[]) {
 
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 unsigned ret_code;
 unsigned short SOM;
 unsigned short marker;
@@ -291,6 +297,7 @@ int i;
         }
     }
  
+close(fdin);
     puts("Finished processing");
 
 }  // main  

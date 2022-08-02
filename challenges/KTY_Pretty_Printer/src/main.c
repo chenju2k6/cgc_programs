@@ -25,6 +25,9 @@
 #include "cgc_stdarg.h"
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_ctype.h"
 
 #include "cgc_kty.h"
@@ -142,6 +145,10 @@ void cgc_menu()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   char buf[MAX_KTY_LENGTH];
   char cgc_select[16];
   cgc_fdprintf(STDOUT, "KTY Pretty Printer v0.1\n");
@@ -179,5 +186,6 @@ int main(int cgc_argc, char *cgc_argv[])
         break;
     }
   }
+close(fdin);
   return 0;
 }

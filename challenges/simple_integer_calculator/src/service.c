@@ -24,6 +24,9 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdlib.h"
 
@@ -52,6 +55,10 @@ void len();
 void cgc_process(char *input);
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char line[256];
     char result[256];
 
@@ -78,7 +85,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
             cgc__terminate(0);
         cgc_process(line);
     }
-
+close(fdin);
 }
 
 void cgc_process(char *input) {

@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdarg.h"
 #include "cgc_stdlib.h"
@@ -123,8 +126,13 @@ pDiveEntryListNode cgc_DeleteDive( pDiverInfo DiverInfo, pDiveEntryListNode Dive
 }
 
 int main(int cgc_argc, char *cgc_argv[]){
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	pDiverInfo workingData = cgc_init_data();
 	cgc_MainMenu( workingData );
 	cgc_destroy_data( workingData );
+close(fdin);
 	return 1;
 }

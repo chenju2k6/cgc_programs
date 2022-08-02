@@ -21,6 +21,9 @@
  *
  */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
 #include "cgc_ctype.h"
@@ -152,6 +155,10 @@ void cgc_init()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   uint8_t good = 0;
   char buf[8], lyrics[2048];
 
@@ -186,6 +193,7 @@ int main(int cgc_argc, char *cgc_argv[])
    }
    cgc_printf("\n");
   }
+close(fdin);
   return 0;
 
 fail:

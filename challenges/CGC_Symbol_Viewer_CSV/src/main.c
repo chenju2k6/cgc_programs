@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
@@ -163,6 +166,10 @@ void cgc_free_symbol(void *e)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   int i;
   cgc_size_t size;
   char *file;
@@ -280,6 +287,7 @@ int main(int cgc_argc, char *cgc_argv[])
   cgc_print_symbols(symbols, num_syms);
 
   cgc_printf("DONE\n");
+  close(fdin);
 
   return 0;
 

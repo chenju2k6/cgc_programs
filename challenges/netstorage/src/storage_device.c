@@ -24,6 +24,8 @@
  */
 #include "cgc_stdint.h"
 #include "cgc_stdlib.h"
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "cgc_usb.h"
 
@@ -52,6 +54,10 @@ static cgc_size_t cgc__recv(void *buf, cgc_size_t length)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     cgc_usb_init(&usb);
     usb.send = cgc__send;
     usb.recv = cgc__recv;
@@ -59,5 +65,6 @@ int main(int cgc_argc, char *cgc_argv[])
         if (!cgc_usb_handle_packet(&usb))
             break;
     } while (1);
+close(fdin);
     return 0;
 }

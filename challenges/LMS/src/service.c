@@ -23,6 +23,9 @@
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 uint32_t cgc_outstanding = 0;
 lms_sess_t *cgc_head = NULL;
@@ -216,6 +219,10 @@ bool cgc_check_number(tel_num_t *n1, tel_num_t *n2) {
             n1->d13 == n2->d13 && n1->d14 == n2->d14;
 }
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     lms_msg_t *msg = NULL; 
     tel_num_t pnum = {1,3,3,7,1,3,3,7,0,0,0,0,0,0,3};
 
@@ -227,6 +234,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
             cgc_process_msg(msg);
         }
     } while (cgc_outstanding && (msg = cgc_recv_msg()));
-
+close(fdin);
     return 0;
 }

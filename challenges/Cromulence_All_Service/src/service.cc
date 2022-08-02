@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_common.h"
 
@@ -38,6 +41,10 @@ extern void cgc_encode_command( char * );
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     CCommandHandler oCmdHandler;
 
     // Make sure to register your command with the command handler and add a description...
@@ -47,6 +54,6 @@ int main(int cgc_argc, char *cgc_argv[])
     oCmdHandler.RegisterCommand( "encode", "This command encodes data.", &cgc_encode_command );
 
     oCmdHandler.Run();
-
+close(fdin);
     return 0;
 }

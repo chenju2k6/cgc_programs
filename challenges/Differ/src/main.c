@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -56,6 +59,10 @@ static int cgc_readopt(int fd) {
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     SFILE *lfile = NULL;
     SFILE *rfile = NULL;
     char *lfilename = NOT_LOADED;
@@ -145,5 +152,6 @@ int main(int cgc_argc, char *cgc_argv[])
     }
 
     cgc_printf("Exiting...\n");
+close(fdin);
     return 0;
 }

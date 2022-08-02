@@ -19,6 +19,10 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
@@ -88,6 +92,10 @@ void cgc_sendReport(Map *map) {
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	Map* map=NULL;
 	unsigned long instruction;
 	char key[MAX_KEY_SIZE+1];
@@ -166,4 +174,5 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
 	}
 
+close(fdin);
 }

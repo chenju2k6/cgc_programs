@@ -40,6 +40,9 @@
 // SERIALIZE object, type is consulted (it will be NUMBER), NUMBER field referenced, causing NULL ptr deref
 
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 // Globals
 namespace_t ns;
@@ -828,6 +831,10 @@ bail:
 // ?B: JSON data
 int main(int cgc_argc, char *cgc_argv[]) {
 
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
+
     int ret = SUCCESS;
     cgc_size_t rx_bytes = 0;
     cgc_size_t tx_bytes = 0;
@@ -885,7 +892,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
 #endif
         }
     }
-
+close(fdin);
 bail:
     return ret;
 }

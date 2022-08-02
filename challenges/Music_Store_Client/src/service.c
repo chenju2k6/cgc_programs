@@ -1,6 +1,9 @@
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 char* cgc_setValue(char* buffer, char* value) {
     char* ptr =NULL;
@@ -394,6 +397,10 @@ Song* cgc_selectSong(SongList results, Request request)
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int ret =0;
     int starting_balance =0;
 #ifdef PATCHED
@@ -434,6 +441,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
     ret = cgc_deallocate(mySongList.songs, sizeof(Song)*starting_balance);
     if (ret != 0)
         cgc__terminate(3);
+close(fdin);
     return ret;
 
 }

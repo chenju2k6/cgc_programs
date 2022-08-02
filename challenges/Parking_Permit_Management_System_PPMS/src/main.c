@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdarg.h"
@@ -61,6 +64,10 @@ int cgc_read_until(int fd, char *buf, cgc_size_t len, char delim)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   int length = 0;
   char buf[8192];
 
@@ -73,5 +80,6 @@ int main(int cgc_argc, char *cgc_argv[])
       cgc_handle_command(buf, length);
     }
   }
+close(fdin);
   return 0;
 }

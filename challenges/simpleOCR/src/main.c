@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "libcgc.h"
 
 #include "cgc_ctype.h"
@@ -388,6 +390,10 @@ static const char* magic = "Z1";
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   if (!cgc_check_junk())
     err("bad junk");
 
@@ -435,4 +441,5 @@ int main(int cgc_argc, char *cgc_argv[])
     cgc_printf("Result: %s\n", output);
   else
     cgc_printf("No characters recognized\n");
+close(fdin);
 }

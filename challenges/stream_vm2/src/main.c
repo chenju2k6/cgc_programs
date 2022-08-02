@@ -28,6 +28,9 @@
 #include "cgc_string.h"
 
 #include "cgc_vm.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int cgc_read_n_bytes(int fd, cgc_size_t n, uint8_t *buf)
 {
@@ -295,15 +298,25 @@ int cgc_read_inst(int fd, state *machine, inst *cur)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   void *x = cgc_frob;
   cgc_transmit(STDOUT, &x, sizeof(void *), NULL);
   if (!cgc_read_header(STDIN))
+{
+close(fdin);
     return -1;
+}
 
   int err = 0;
   int flags = cgc_read_flags(STDIN, &err);
-  if (err)
+  if (err) {
+
+close(fdin);
     return -1;
+}
 
   inst cur;
   state *machine = cgc_init_state(STDIN, flags);
@@ -316,6 +329,7 @@ int main(int cgc_argc, char *cgc_argv[])
     if (!cgc_dump_regs(STDOUT, machine))
       break;
   }
+close(fdin);
 
   cgc_transmit(STDOUT, "DONE", 5, NULL);
 }

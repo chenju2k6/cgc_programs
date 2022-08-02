@@ -23,6 +23,9 @@
  *
  */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdarg.h"
 #include "cgc_stdlib.h"
@@ -667,6 +670,10 @@ void cgc_quit()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   int admin_mode = 0;
   char buf[4096];
   char welcome[] = "========= Movie Rental Service v0.1 =========";
@@ -731,6 +738,6 @@ int main(int cgc_argc, char *cgc_argv[])
       }
     }
   }
-
+close(fdin);
   return 0;
 }

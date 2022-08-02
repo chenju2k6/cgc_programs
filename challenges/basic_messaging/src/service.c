@@ -1,6 +1,10 @@
 #include "libcgc.h"
 #include "cgc_stdlib.h"
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 /*
 
 Author: John Berry <john.n.berry@gmail.com>
@@ -689,6 +693,11 @@ end:
  * @return Always returns 0
  **/
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	cgc_handle_menu();
+close(fdin);
 	return 0;
 }

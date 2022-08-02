@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdlib.h"
 #include "cgc_stdint.h"
@@ -33,6 +36,10 @@ THE SOFTWARE.
 #include "cgc_pmp.h"
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   uint16_t file_length;
 
   // Read 2 byte length field
@@ -109,6 +116,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
   // Deallocate the PMP file and canvas
   cgc_PMPDeallocate(&pmp);
   cgc_DestroyCanvas(&c);
-  
+close(fdin);  
   return 0;
 }

@@ -24,6 +24,9 @@
 #include "cgc_libc.h"
 #include "cgc_utf8.h"
 #include "cgc_vfs.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 static const utf8char pubroot_path[] = "/public/";
 static struct vfs vfs;
@@ -143,6 +146,10 @@ cgc_list_files(void)
 
 int
 main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int cmd, cmd_ret;
 
     // Set up filesystem
@@ -175,7 +182,7 @@ main(int cgc_argc, char *cgc_argv[]) {
     }
 
     cgc_vfs_destroy(&vfs);
-
+close(fdin);
     return 0;
 }
 

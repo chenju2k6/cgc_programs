@@ -24,6 +24,9 @@
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_squarerabbit.h"
 
 #define INPUT_SIZE 512
@@ -338,6 +341,10 @@ void cgc_play_poker()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char input[INPUT_SIZE];
     unsigned int seed = 0;
 
@@ -382,6 +389,7 @@ int main(int cgc_argc, char *cgc_argv[])
         }
     }
 
+close(fdin);
     cgc_printf("Thanks for playing!\n");
 }
 

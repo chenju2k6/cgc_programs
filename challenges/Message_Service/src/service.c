@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_service.h"
 #include "cgc_jlib.h"
@@ -68,6 +71,10 @@ void cgc_BusyWork(void) {
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	users_t users[MAX_USERS];
 	char buf[100];
 	int done = 0;
@@ -177,6 +184,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
 			}
 		}
 	}
-
+close(fdin);
 	return(0);
 }

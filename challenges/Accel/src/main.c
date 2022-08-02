@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_ctype.h"
 #include "cgc_stdarg.h"
@@ -161,6 +164,10 @@ exit_cmd:
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char line[LINE_SIZE];
     cgc_init_sheet();
     int cgc_exit = 0;
@@ -199,7 +206,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
                 break;
         }
     } while (!cgc_exit);
-
+close(fdin);
     cgc_printf("Unsupported signal. Exiting...\n");
     return 0;
 }

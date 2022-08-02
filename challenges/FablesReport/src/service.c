@@ -22,6 +22,9 @@
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void cgc_newReport(Report *report) {
 	char character = 0;
@@ -274,11 +277,15 @@ int cgc_newRecord(Report *report) {
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	Report report = {NULL, 0, 0};
 	char* field = NULL;
 
 	cgc_newReport(&report);
  	while(cgc_newRecord(&report));
-
+close(fdin);
 	return 0;
 }

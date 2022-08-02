@@ -24,6 +24,9 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_scramble.h"
 #include "cgc_scramble_gen.h"
 
@@ -88,6 +91,10 @@ uint8 cgc_scramble_okay() {
 #include "cgc_stdlib.h"
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   uint16 desired = TARGET;
   scramble_item mst, current;
   uint8 found;
@@ -145,5 +152,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
       _terminate(-1);
     }
   }
+  close(fdin);
 }
 #endif

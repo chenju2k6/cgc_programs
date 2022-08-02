@@ -29,11 +29,18 @@ THE SOFTWARE.
 #include "cgc_transmit.h"
 #include "cgc_receive.h"
 #include "cgc_input.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 extern double cgc_wall_clock;
 extern double cgc_max_wall_clock;
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 
 	cgc_puts("Welcome to the network queuing simulator");
 
@@ -66,6 +73,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
 	cgc_PrintStats();
 
 	cgc_DestroyQueues();
-
+close(fdin);
 	cgc__terminate(0);
 }

@@ -20,7 +20,8 @@
  * THE SOFTWARE.
  *
  */
-
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
 #include "cgc_alphabet.h"
@@ -258,6 +259,10 @@ void cgc_cmd_play_game(main_t *state)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     main_t state;
     cgc_memset(&state, 0, sizeof(main_t));
 
@@ -296,6 +301,6 @@ int main(int cgc_argc, char *cgc_argv[])
         }
     }
     cgc_write_int(STATUS_SUCCESS);
-
+close(fdin);
     return 0;
 }

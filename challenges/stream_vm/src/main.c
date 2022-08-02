@@ -25,6 +25,8 @@
 #include "cgc_stdint.h"
 #include "cgc_string.h"
 
+#include <sys/stat.h>
+#include <fcntl.h>
 #define MAGIC 'iVM\x00'
 #define MEM_SIZE 0x10000
 #define NUM_REGISTERS 16
@@ -165,6 +167,10 @@ do_slte:
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     cgc_size_t bytes;
     cgc_memset(&state, 0, sizeof(state));
 
@@ -201,9 +207,11 @@ int main(int cgc_argc, char *cgc_argv[])
     }
 
     cgc_transmit(STDOUT, "DONE", 4, &bytes);
+close(fdin);
     return 0;
 
 bad_init:
     cgc_transmit(STDOUT, "BAD_INIT", 8, &bytes);
+close(fdin);
     return 0;
 }

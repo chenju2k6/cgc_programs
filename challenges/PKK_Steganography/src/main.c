@@ -23,6 +23,9 @@
  *
  */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdarg.h"
 #include "cgc_stdlib.h"
@@ -286,6 +289,10 @@ int cgc_extract_text(pkk_t *pkk, char *buf)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   char text[MAX_TEXT_LEN];
   int out_len;
   char *output;
@@ -324,7 +331,7 @@ int main(int cgc_argc, char *cgc_argv[])
       cgc_printf("[ERROR] Invalid mode.\n");
       break;
   }
-
+close(fdin);
   cgc_cleanup_input(input);
   return 0;
 }

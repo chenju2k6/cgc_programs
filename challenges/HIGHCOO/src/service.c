@@ -23,6 +23,9 @@
 #include "cgc_libc.h"
 #include "cgc_operation.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 enum {
     CMD_ADD_HAIKU = 1492,
@@ -33,6 +36,10 @@ enum {
 };
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 
     uint32_t command[1] = {0};
     int ret = 0;
@@ -68,6 +75,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
         command[0] = 0;
     }
-
+close(fdin);
     return ret;
 }

@@ -30,6 +30,9 @@ THE SOFTWARE.
 #include "cgc_mymath.h"
 #include "cgc_service.h"
 #include "cgc_llist.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_map.h"
 #include "cgc_ui.h"
@@ -45,10 +48,14 @@ and addresses
 
 int main(int cgc_argc, char *cgc_argv[]){
 	//new
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	psList turnList = cgc_init_turnList();
 	pmap thisMap = cgc_init_map("Newville");
 	cgc_puts("This is Mapper.");
 	cgc_prompt_loop(thisMap, turnList);
-
+close(fdin);
 	return 1;
 }

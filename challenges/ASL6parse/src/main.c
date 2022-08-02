@@ -21,6 +21,8 @@
  *
  */
 
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "cgc_stdlib.h"
 #include "cgc_stdint.h"
 #include "cgc_string.h"
@@ -47,6 +49,10 @@ static int cgc_read_exactly(int fd, uint8_t *buf, cgc_size_t n)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   unsigned size = 0;
   cgc_size_t cgc_read = 0;
   uint8_t buf[MAX_SIZE];
@@ -69,6 +75,6 @@ int main(int cgc_argc, char *cgc_argv[])
   element *e = cgc_decode(buf, (unsigned) buf + size);
   if (e == NULL)
     cgc_exit(1);
-
+close(fdin);
   cgc_pprint(e);
 }

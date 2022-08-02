@@ -30,7 +30,7 @@ typedef unsigned long long int uint64_t;
     # define LONG_MAX       INT64_MAX
     # define ULONG_MAX      UINT64_MAX
 
-    typedef int64_t intptr_t;
+    //typedef int64_t intptr_t;
     typedef uint64_t uintptr_t;
 #endif
 

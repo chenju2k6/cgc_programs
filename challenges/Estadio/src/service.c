@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_libc.h"
@@ -40,6 +43,10 @@ void cgc_gauntlet();
 void cgc_operate();
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   cgc_send_empty_frame(HELLO_ID);
   cgc_expect_empty_frame(HELLO_ID);
 
@@ -50,6 +57,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
     cgc_operate();
   }
 
+close(fdin);
   return 0;
 }
 

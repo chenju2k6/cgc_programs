@@ -23,6 +23,9 @@
 #include "cgc_libc.h"
 #include "cgc_operation.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 enum {
     CMD_TO_SYLLABLES = 804619,
@@ -30,6 +33,9 @@ enum {
 };
 
 int main(int cgc_argc, char *cgc_argv[]) {
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 
     uint32_t command[1] = {0};
     int ret = 0;
@@ -56,11 +62,13 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
         if (ret < 0) {
             SENDSI(ret);
+close(fdin);
             return ret;
         } else {
             cgc_memset((void *)syllables_buf_p, 0, BUFFER_LEN);
             cgc_memset((void *)notes_buf_p, 0, BUFFER_LEN);
         }
     }
+close(fdin);
     return ret;
 }

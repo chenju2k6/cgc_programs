@@ -23,6 +23,9 @@
 #include "cgc_libc.h"
 #include "cgc_tt.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 tt_game * game;
 
@@ -177,6 +180,10 @@ void cgc_do_play() {
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char choice[14];
     int choice_buf_size = 14;
     cgc_size_t replay = 0;
@@ -241,7 +248,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
             break;
         }
     }
-
+close(fdin);
     return 0;
 }
 

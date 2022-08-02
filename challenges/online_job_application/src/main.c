@@ -25,6 +25,9 @@
 #include "cgc_string.h"
 
 #include "cgc_utils.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #define RESP_SIZE 1024
 #define FALSE 0
@@ -209,6 +212,10 @@ void cgc_print_menu()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     page_option pg_opt = NOOP;
     cgc_printf("\n\n");
     cgc_printf("Thanks for your interest in the Sea Eye Association.\n");
@@ -242,6 +249,7 @@ int main(int cgc_argc, char *cgc_argv[])
     }
 
     cgc_printf("Thank you!\n");
+close(fdin);
     return 0;
 }
 

@@ -23,6 +23,9 @@
 #include "cgc_blog.h"
 #include "cgc_io.h"
 #include "cgc_user.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void call_ctors(void);
 
@@ -107,6 +110,10 @@ bool make_selection(User *&current_user)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     User *current_user = NULL;
     cgc_size_t selection = 0;
     bool not_done = true;
@@ -117,4 +124,5 @@ int main(int cgc_argc, char *cgc_argv[])
         print_menu(current_user);
         not_done = make_selection(current_user);
     }
+close(fdin);
 }

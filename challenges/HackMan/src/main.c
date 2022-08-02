@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdarg.h"
@@ -257,6 +260,10 @@ new_chal:
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   char buf[128];
   cgc_fdprintf(STDOUT, "\nWelcome to HackMan v13.37\n\n");
 
@@ -268,6 +275,6 @@ int main(int cgc_argc, char *cgc_argv[])
       cgc_banner();
     cgc_play_game();
   }
-
+close(fdin);
   return 0;
 }

@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_service.h"
 
@@ -301,6 +304,10 @@ int cgc_menu( void )
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	char *image = NULL;
 	int image_length = 0;
 	int magic = 0;
@@ -318,5 +325,5 @@ int main(int cgc_argc, char *cgc_argv[])
 	if ( image_length < 4 ) {
 		return 0;
 	}
-
+  close(fdin);
 }

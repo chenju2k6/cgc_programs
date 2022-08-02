@@ -24,6 +24,9 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_carbonate.h"
 #include "cgc_messages.h"
 #include "cgc_protocol.h"
@@ -35,6 +38,10 @@ void cgc_cool_set_stuff();
 void cgc_safe_set_stuff();
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   cgc_send_empty_frame(HELLO_ID);
   cgc_expect_empty_frame(HELLO_ID);
 
@@ -55,7 +62,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
     }
   }
 #endif
-
+close(fdin);
   return 0;
 }
 

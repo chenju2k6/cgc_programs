@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_service.h"
 #include "cgc_planetParsers.h"
@@ -31,6 +34,10 @@ pPlanet solarSystem[10];
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	int choice = 0;
 	char selection[30];
 	pstring tl = NULL;
@@ -173,6 +180,7 @@ int main(int cgc_argc, char *cgc_argv[])
 	pPlanet pl = cgc_planetTopLevel( tl );
 
 	cgc_planetMenu(pl);
+  close(fdin);
 
 	cgc__terminate(0);
 	return 0;

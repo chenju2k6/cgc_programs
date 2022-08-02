@@ -26,6 +26,7 @@
 #include "libcgc.h"
 #include "cgc_malloc.h"
 #include "cgc_stdlib.h"
+#include <unistd.h>
 
 static void cgc_free_huge(struct blk_t *blk)
 {

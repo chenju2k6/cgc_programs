@@ -28,10 +28,18 @@ THE SOFTWARE.
 #include "cgc_board.h"
 #include "cgc_moves.h"
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 // current player
 char cgc_CURR_PLAYER[6];
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	char srcx, srcy, dstx, dsty;
 	// board
 	char board[X_MAX][Y_MAX];
@@ -61,6 +69,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
 		cgc_puts("OK");
 	}
-
+clsoe(fdin);
 	return(0);
 }

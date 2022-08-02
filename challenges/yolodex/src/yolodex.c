@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -581,9 +584,15 @@ void cgc_inputLoop() {
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	cgc_initCookies();
 	cgc_puts("Welcome to the yolodex.");
 	cgc_initYolodex();
 	cgc_inputLoop();
+close(fdin);
 	cgc__terminate(0);
+
 }

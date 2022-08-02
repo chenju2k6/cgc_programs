@@ -20,6 +20,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_service.h"
 
 
@@ -212,6 +215,10 @@ int cgc_do_quit() {
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     cgc_size_t cmd_buf_sz = 20;
     char buf[cmd_buf_sz];
     jokedb_struct jokedb;
@@ -247,5 +254,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
             cgc_do_menu();
         }
     }
+  close(fdin);
 }
 

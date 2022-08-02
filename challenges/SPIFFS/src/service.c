@@ -24,6 +24,9 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdarg.h"
 #include "cgc_stdlib.h"
@@ -719,7 +722,12 @@ pNode cgc_find_file_node_by_name(char *name, pNode directory){
 
 
 int main(int cgc_argc, char *cgc_argv[]){
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	pDataStruct workingData = cgc_init_data();
 	cgc_start_UI(workingData);
+close(fdin);
 	return 0;
 }

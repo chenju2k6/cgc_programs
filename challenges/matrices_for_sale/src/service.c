@@ -22,6 +22,9 @@
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_service.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void cgc_identityMap(Message* message)
 {
@@ -203,6 +206,10 @@ void cgc_computeResult(Message *message)
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	Message* message = NULL;
 	Worker worker[4] = {0};
 	int i;
@@ -260,6 +267,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
 		cgc_receiveMessage(message);
 	}
-
+close(fdin);
 
 }

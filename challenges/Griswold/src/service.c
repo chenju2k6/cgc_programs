@@ -19,6 +19,9 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_operation.h"
@@ -30,6 +33,10 @@ enum {
 };
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 
     uint32_t mode[1] = {0};
     int ret = 0;
@@ -55,5 +62,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
             return ret;
         }
     }
+close(fdin);
     return ret;
 }

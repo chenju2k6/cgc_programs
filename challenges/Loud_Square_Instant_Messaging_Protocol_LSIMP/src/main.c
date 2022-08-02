@@ -24,6 +24,9 @@
 #include "cgc_string.h"
 #include "cgc_ctype.h"
 #include "cgc_readuntil.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_lsimp.h"
 
@@ -288,6 +291,10 @@ void cgc_quit()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   unsigned int len;
   char buf[MAX_BUF_LEN];
   lsimp_msg_t *msg;
@@ -320,6 +327,6 @@ int main(int cgc_argc, char *cgc_argv[])
         return -1;
     }
   }
-
+close(fdin);
   return 0;
 }

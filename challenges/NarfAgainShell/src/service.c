@@ -19,6 +19,9 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_list.h"
 #include "cgc_libc.h"
@@ -270,6 +273,10 @@ free_path:
 int
 main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int cmd, ret;
 
     cgc_vfs_init(&vfs);
@@ -316,7 +323,7 @@ main(int cgc_argc, char *cgc_argv[])
     }
 
     cgc_vfs_destroy(&vfs);
-
+close(fdin);
     return 0;
 }
 

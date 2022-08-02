@@ -20,6 +20,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_service.h"
 
 // Decode instruction.  
@@ -348,6 +351,10 @@ bail:
 
 int main(int cgc_argc, char *cgc_argv[]) {
 
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
+
     int ret = SUCCESS;
     cgc_size_t rx_bytes = 0;
     cgc_size_t tx_bytes = 0;
@@ -427,7 +434,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
         ret = ERRNO_TRANSMIT;
         goto bail;
     }
-
+close(fdin);
 bail:
     if (space) { cgc_deallocate(space, SCRATCH_SZ + BYTECODE_SZ); }
     return ret;

@@ -23,6 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -32,6 +38,9 @@ THE SOFTWARE.
 
 int main(int cgc_argc, char *cgc_argv[]) {
     
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     bst_node_type *head;
     data_item_type *item;
     bst_stats_type stats;
@@ -74,6 +83,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
             if (!item) {
 
                 cgc_printf("Unable to allocate memory\n");
+close(fdin);
                 return(-1);
             }
 
@@ -98,6 +108,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
         // time to cgc_exit
         else if (args[0][0]=='x') {
 
+close(fdin);
             return(0);
         }
         // walk the database and show all entries
@@ -122,5 +133,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
     }
 
  
+close(fdin);
 }  // main  
 

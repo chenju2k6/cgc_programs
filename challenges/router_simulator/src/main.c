@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "cgc_stdint.h"
 #include "cgc_stdlib.h"
@@ -746,6 +748,10 @@ static void cmd_enable_mode(char *line)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     if (cgc_allocate(sizeof(g_route_memory[0])*MAX_ROUTE_ALLOCATIONS, 0, (void*)&g_route_memory) != 0)
         return 0;
     while (1)
@@ -781,6 +787,7 @@ int main(int cgc_argc, char *cgc_argv[])
                 g_enable = 0;
         }
     }
+close(fdin);
     print("GOOD-BYE\n");
     return 0;
 }

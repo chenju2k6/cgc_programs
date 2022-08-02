@@ -25,13 +25,20 @@ THE SOFTWARE.
 */
 
 #include "cgc_common.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     CUserManager oUserManager;
 
     // Run the user manager system
     oUserManager.Run();
-
+close(fdin);
     return 0;
 }

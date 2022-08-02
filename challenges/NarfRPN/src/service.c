@@ -20,6 +20,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_libc.h"
 
@@ -27,6 +30,10 @@
 
 int
 main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int cmd, ret;
     struct rpncalc_state state;
 
@@ -44,7 +51,7 @@ main(int cgc_argc, char *cgc_argv[]) {
     }
 
     cgc_rpncalc_destroy(&state);
-
+close(fdin);
     return 0;
 }
 

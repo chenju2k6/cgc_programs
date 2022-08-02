@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 
 #include "cgc_stdlib.h"
@@ -33,6 +36,10 @@ int cgc_repl(char *expr);
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   cgc_printf("Welcome to the SLUR REPL. Type an expression to evaluate it.\n");
   char *buf = cgc_malloc(MAX_EXPRESSION_LENGTH + 1);
 
@@ -52,6 +59,7 @@ int main(int cgc_argc, char *cgc_argv[])
     if (cgc_repl(buf) != 0)
       cgc_printf("Error evaluating expression.\n");
 
+  close(fdin);
     return 0;
   }
 }

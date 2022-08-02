@@ -19,6 +19,9 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_libc.h"
@@ -376,6 +379,10 @@ cgc_quit(char *args)
 
 int
 main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char *line;
     cgc_ssize_t cgc_read;
     int ret;
@@ -415,7 +422,7 @@ main(int cgc_argc, char *cgc_argv[]) {
         if (cgc_write_all(STDOUT, ret_buffer, sizeof(ret_buffer)) != sizeof(ret_buffer))
             return -1;
     }
-
+close(fdin);
     return 0;
 }
 

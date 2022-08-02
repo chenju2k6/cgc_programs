@@ -22,6 +22,9 @@
  */
 
 extern "C" {
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
 #include "cgc_ctype.h"
@@ -111,6 +114,10 @@ char** parse_args(char *s, int *argc)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   int argc;
   char buf[2048], **argv = 0;
   cgc_fileMan = new FileManager();
@@ -132,5 +139,6 @@ int main(int cgc_argc, char *cgc_argv[])
       cgc_free(argv);
     }
   }
+close(fdin);
   return 0;
 }

@@ -19,17 +19,25 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_libc.h"
 #include "cgc_viewscript.h"
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char buf[4096] = {0};
 
     int res = cgc_recvuntil(STDIN, buf, sizeof(buf), '\0');
     if (res < 0)
         return res;
 
+close(fdin);
     return cgc_run_viewscript(buf);
 }

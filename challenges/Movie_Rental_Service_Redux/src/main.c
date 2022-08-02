@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_stdlib.h"
 
@@ -32,6 +35,10 @@ enum {DEBUG = 0, ADMIN = 1, USER = 2};
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     int exited = 0;
     int user = USER;
 
@@ -57,4 +64,5 @@ int main(int cgc_argc, char *cgc_argv[])
             cgc_printf("\n");
     }
     cgc_printf("Bye!\n");
+close(fdin);
 }

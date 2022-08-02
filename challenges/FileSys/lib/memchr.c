@@ -25,6 +25,7 @@
 
 #include "libcgc.h"
 #include "cgc_stdint.h"
+#include <unistd.h>
 
 extern void *cgc_memchr(const void *s, int c, cgc_size_t n)
 {

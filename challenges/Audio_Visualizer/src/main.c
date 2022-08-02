@@ -23,6 +23,9 @@
  *
  */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
@@ -190,6 +193,9 @@ int cgc_select_option(uwfc_t **track) {
 }
 
 int main(int cgc_argc, char *cgc_argv[]) {
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     uwfc_t *current_track = NULL;
     int code = 1;
     complex_t *dft_out;
@@ -198,7 +204,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
         cgc_print_menu(current_track);
         code = cgc_select_option(&current_track);
     } while (code);
-
+close(fdin);
     cgc_printf("EXITING...\n");
     return 0;
 }

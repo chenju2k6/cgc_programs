@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -449,6 +452,10 @@ try_again:
     a = cgc_strtol(g_buf, NULL, 10);
 }
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     cgc_init_randomness();
     g_game_board = cgc_gld_init_game();
     cgc_new_game();
@@ -459,5 +466,6 @@ int main(int cgc_argc, char *cgc_argv[]) {
     } while (status);
 
     cgc_printf("EXITING...\n");
+close(fdin);
     return 0;
 }

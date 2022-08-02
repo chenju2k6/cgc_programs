@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  * 
  */
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "cgc_stdlib.h"
 #include "cgc_stdint.h"
 #include "cgc_string.h"
@@ -468,6 +470,10 @@ static int process_ops()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     uint32_t *last_id = NULL;
     cgc_enlarge_transactions_array(10);
 
@@ -612,5 +618,6 @@ fail:
         last_id = NULL;
         continue;
     }
+close(fdin);
     return 0;
 }

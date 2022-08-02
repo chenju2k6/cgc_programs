@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -272,6 +275,10 @@ void cgc_programming_interface()
 
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 #ifdef PATCHED
     char name[84];
 #else
@@ -401,6 +408,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
 
     cgc_printf("You broke the bank!\n");
 
+    close(fdin);
     // End of game
     finish:
         cgc_printf("Goodbye\n");

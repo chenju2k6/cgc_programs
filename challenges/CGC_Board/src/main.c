@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  *
  */
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "cgc_stdlib.h"
 #include "cgc_string.h"
 
@@ -93,6 +95,10 @@ static int handle_sd()
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char input[16];
     int done = 0, state;
 
@@ -166,6 +172,6 @@ int main(int cgc_argc, char *cgc_argv[])
     }
 
     cgc_engine_destroy();
-
+close(fdin);
     return 0;
 }

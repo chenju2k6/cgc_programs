@@ -24,9 +24,16 @@
 #include "cgc_interp.h"
 #include "cgc_io.h"
 #include "cgc_lex.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     io_t io;
     program_t p;
 
@@ -41,6 +48,6 @@ int main(int cgc_argc, char *cgc_argv[])
     {
         cgc_printf("PARSE ERROR\n");
     }
-
+close(fdin);
     return 0;
 }

@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_service.h"
 
@@ -98,7 +101,11 @@ void cgc_service_loop( void )
 
 int main(int cgc_argc, char *cgc_argv[])
 {
-	cgc_service_loop();
 
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
+	cgc_service_loop();
+close(fdin);
     return 0;
 }

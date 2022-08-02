@@ -26,7 +26,7 @@
 #include "libcgc.h"
 #include "cgc_malloc.h"
 #include "cgc_stdlib.h"
-
+#include <unistd.h>
 /* Get some more memory through allocate */
 static int cgc_allocate_new_blk(void)
 {

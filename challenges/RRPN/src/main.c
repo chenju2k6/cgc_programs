@@ -22,6 +22,9 @@
  * THE SOFTWARE.
  * 
  */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "cgc_ctype.h"
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -215,6 +218,10 @@ int cgc_jit_op(jit_t *jit, char op)
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     char buf[8192];
     g_output_buf = cgc_malloc(MAX_OUTPUT);
     if (g_output_buf == NULL)
@@ -304,6 +311,6 @@ int main(int cgc_argc, char *cgc_argv[])
             cgc_fdprintf(STDOUT, "%d (0x%08x)\n", val, val);
         cgc_fdprintf(STDOUT, "> ");
     }
-
+close(fdin);
     return 0;
 }

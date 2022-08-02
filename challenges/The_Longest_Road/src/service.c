@@ -24,6 +24,9 @@ THE SOFTWARE.
 
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "libcgc.h"
 #include "cgc_service.h"
 #include "cgc_math_lib.h"
@@ -35,6 +38,10 @@ int goal_len = 9; // set target length to win game
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	char packet_str[256];
 
 	cgc_printf("go time\n");
@@ -124,5 +131,6 @@ int main(int cgc_argc, char *cgc_argv[])
 		}
 	}	
 	cgc_printf("good bye\n");
+close(fdin);
 	return 0;
 }

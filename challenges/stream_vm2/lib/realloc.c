@@ -25,6 +25,7 @@
 
 #include "libcgc.h"
 #include "cgc_malloc.h"
+#include <unistd.h>
 #include "cgc_stdlib.h"
 #include "cgc_stdint.h"
 #include "cgc_string.h"

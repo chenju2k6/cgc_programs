@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cgc_service.h"
 
@@ -103,6 +106,10 @@ pBitStream cgc_readImageData( void )
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
 	unsigned char ba = 0;
 
 	pBitStream bs;
@@ -116,5 +123,6 @@ int main(int cgc_argc, char *cgc_argv[])
 	cgc_renderCVF( bs );
 
 	cgc_freeStream( &bs );
+  close(fdin);
 	return 0;
 }

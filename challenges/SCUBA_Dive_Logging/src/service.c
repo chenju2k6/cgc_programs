@@ -23,6 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "libcgc.h"
 #include "cgc_stdlib.h"
@@ -32,6 +34,10 @@ THE SOFTWARE.
 logbook_type cgc_logbook;
 
 int main(int cgc_argc, char *cgc_argv[]) {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
     
     menu_item menu[] = {
 
@@ -50,7 +56,7 @@ int main(int cgc_argc, char *cgc_argv[]) {
   	cgc_bzero((void *)&cgc_logbook, sizeof(cgc_logbook));
 
   	cgc_process_menu(menu, sizeof(menu)/ sizeof(menu_item));
-
+close(fdin);
  
 }  // main  
 

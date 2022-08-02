@@ -1,4 +1,7 @@
 #include "libcgc.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 typedef unsigned int uint32_t;
 
@@ -101,6 +104,10 @@ char gHelpMsg[] = "### The Instruction Set\n"
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1],O_RDONLY);
+close(0);
+dup2(fdin, 0);
   uint32_t insn = 0;
   cgc_size_t rx_bytes = 0;
   cgc_size_t total = 0;
@@ -292,7 +299,7 @@ int main(int cgc_argc, char *cgc_argv[])
   }
 
   cgc_transmit_all(&stack[curTop], sizeof(uint32_t));
-
+close(fdin);
   return (0);
 }
 

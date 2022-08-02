@@ -1,5 +1,8 @@
 #include "libcgc.h"
 #include "cgc_mylibc.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 typedef void (*handler_func_t)(void);
 
@@ -525,6 +528,10 @@ int cgc_checkLogin(ulargeint_t* pUserNum, ulargeint_t* px, ulargeint_t* py, ular
 
 int main(int cgc_argc, char *cgc_argv[])
 {
+
+int fdin = open(cgc_argv[1], O_RDONLY);
+close(0);
+dup2(fdin, 0);
   ulargeint_t luserPW;
   ulargeint_t lx;
   ulargeint_t ly;
@@ -580,4 +587,5 @@ int main(int cgc_argc, char *cgc_argv[])
       return (0);
     }
   } while (1);
+close(fdin);
 }
